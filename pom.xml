@@ -11,11 +11,11 @@
 	</parent>
 
 	<groupId>org.lamisplus.modules</groupId>
-	<artifactId>starter_module</artifactId>
+	<artifactId>opd_setting_module</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
-	<name>starter_module</name>
-	<description>starter module</description>
+	<name>opd_setting_module</name>
+	<description>opd module</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -305,7 +305,7 @@
 						<phase>generate-resources</phase>
 						<configuration>
 							<target>
-								<copy todir="${project.build.directory}/classes/views/static/hepatitis">
+								<copy todir="${project.build.directory}/classes/views/static/opd">
 									<fileset dir="${project.basedir}/build" />
 								</copy>
 							</target>

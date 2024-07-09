@@ -1,19 +1,19 @@
-basePackage: org.lamisplus.modules.hepatitis
-name: HepatitisModule
+basePackage: org.lamisplus.modules.opd_setting
+name: OPDSettingModule
 store: true
 menus:
-  - icon: fa fa-virus
+  - icon: fa fa-gear
     disabled: false
-    name: Hepatitis
-    state: hepatitis
-    url: /across/resources/static/hepatitis/index.html
-umdLocation: /across/resources/static/hepatitis/index.html
+    name: OPDSetting
+    state: opd_setting
+    url: /across/resources/static/opd/index.html
+umdLocation: /across/resources/static/opd/index.html
 webModules:
-  - breadcrumb: HEPATITIS
-    name: HepatitisModule
-    path: hepatitis
+  - breadcrumb: OPDSetting
+    name: OPDSettingModule
+    path: opd_setting
     position: 99
 permissions:
-  - name: create_hepatitis
-    description: create hepatitis
-    moduleName: HepatitisModule
+  - name: create_post_service
+    description: create post service
+    moduleName: OPDSettingModule

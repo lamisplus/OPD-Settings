@@ -1,4 +1,4 @@
-package org.lamisplus.modules.starter.controller;
+package org.lamisplus.modules.opd_setting.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

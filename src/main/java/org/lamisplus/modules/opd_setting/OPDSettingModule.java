@@ -1,4 +1,4 @@
-package org.lamisplus.modules.starter;
+package org.lamisplus.modules.opd_setting;
 
 import com.foreach.across.config.AcrossApplication;
 import com.foreach.across.core.AcrossModule;

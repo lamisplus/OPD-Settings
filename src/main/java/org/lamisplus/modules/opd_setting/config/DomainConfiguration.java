@@ -1,4 +1,4 @@
-package org.lamisplus.modules.starter.config;
+package org.lamisplus.modules.opd_setting.config;
 
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 @Slf4j
 @Configuration
 @EnableJpaRepositories( transactionManagerRef = "starterTransactionManger",
-        basePackages = {"org.lamisplus.modules.starter.repository"})
+        basePackages = {"org.lamisplus.modules.opd_setting.repository"})
 public class DomainConfiguration {
     private final DataSource dataSource;
 

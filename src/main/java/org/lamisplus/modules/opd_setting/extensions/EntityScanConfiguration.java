@@ -1,10 +1,10 @@
-package org.lamisplus.modules.starter.extensions;
+package org.lamisplus.modules.opd_setting.extensions;
 
 import com.foreach.across.core.annotations.ModuleConfiguration;
 import com.foreach.across.modules.hibernate.provider.HibernatePackageConfigurer;
 import com.foreach.across.modules.hibernate.provider.HibernatePackageRegistry;
 import lombok.extern.slf4j.Slf4j;
-import org.lamisplus.modules.starter.domain.StarterDomain;
+import org.lamisplus.modules.opd_setting.domain.StarterDomain;
 import org.lamisplus.modules.patient.domain.PatientDomain;
 
 @Slf4j

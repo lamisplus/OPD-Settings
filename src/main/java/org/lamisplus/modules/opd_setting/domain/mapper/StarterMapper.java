@@ -1,4 +1,4 @@
-package org.lamisplus.modules.starter.domain.mapper;
+package org.lamisplus.modules.opd_setting.domain.mapper;
 
 import org.mapstruct.Mapper;
 
