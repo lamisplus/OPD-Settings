@@ -14,18 +14,21 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.sql.DataSource;
 
-@RequiredArgsConstructor
 @Slf4j
 @Configuration
 @EnableJpaRepositories( transactionManagerRef = "starterTransactionManger",
         basePackages = {"org.lamisplus.modules.opd_setting.repository"})
 public class DomainConfiguration {
-    private final DataSource dataSource;
+    private DataSource dataSource;
 
     @PersistenceUnit
-    private  final EntityManagerFactory entityManagerFactory;
-
-
+    private  EntityManagerFactory entityManagerFactory;
+    public DomainConfiguration(DataSource dataSource, EntityManagerFactory entityManagerFactory) {
+        this.dataSource = dataSource;
+        this.entityManagerFactory = entityManagerFactory;
+    }
+    public DomainConfiguration() {
+    }
     @Bean(name = "starterTransactionManger")
     @Primary
     public TransactionManager transactionManager(){
