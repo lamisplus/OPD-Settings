@@ -1,6 +1,7 @@
 
-package org.lamisplus.modules.opd_setting.domain.entity;
+package org.lamisplus.modules.opd_setting.service;
 import org.lamisplus.modules.opd_setting.domain.dto.PostDto;
+import org.lamisplus.modules.opd_setting.domain.entity.Post;
 import org.lamisplus.modules.opd_setting.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

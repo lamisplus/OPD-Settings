@@ -2,7 +2,7 @@ package org.lamisplus.modules.opd_setting.controller;
 
 import org.lamisplus.modules.opd_setting.domain.dto.PostDto;
 import org.lamisplus.modules.opd_setting.domain.entity.Post;
-import org.lamisplus.modules.opd_setting.domain.entity.PostService;
+import org.lamisplus.modules.opd_setting.service.PostService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

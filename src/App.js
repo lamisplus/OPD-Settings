@@ -11,19 +11,39 @@ import "./main/webapp/vendor/bootstrap-select/dist/css/bootstrap-select.min.css"
 import "./../src/main/webapp/css/style.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import Home from './main/webapp/jsx/components/Home'
+import PatientDetail from './main/webapp/jsx/components/Patient/PatientDetail'
+import ViralHepatitisFormsContainer from './main/webapp/jsx/components/Patient/ViralHepatitisFormsContainer'
+import { QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { queryClient } from "./main/webapp/jsx/utils/queryClient";
 
 export default function App() {
   return (
+    <QueryClientProvider client={queryClient}>
     <Router>
       <div>
       <ToastContainer />
-        <Switch>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
+      <Switch>
+            <Route path="/patient-history">
+              <PatientDetail />
+            </Route>
+            {/* <Route path="/register-patient">
+              <ViralHepatitisFormsContainer />
+            </Route>
+            <Route path="/enroll-patient">
+              <EnrollPatientPage />
+            </Route>
+            <Route path="/update-patient">
+              <UpdatePatientEnrollment />
+            </Route> */}
+
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
       </div>
  </Router>
+ </QueryClientProvider>
   );
 }
 
