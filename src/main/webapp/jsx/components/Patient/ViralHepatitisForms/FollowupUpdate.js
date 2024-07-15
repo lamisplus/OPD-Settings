@@ -99,7 +99,12 @@ const useStyles = makeStyles((theme) => ({
 const FollowupUpdate = (props) => {
   const classes = useStyles();
   const history = useHistory();
-  const facilities = useFacilities(`${baseUrl}opd/facilities`);
+
+  if (history?.location?.state?.isCreate) {
+    alert(history?.location?.state?.isCreate)
+    props?.setActiveContent({ ...props.activeContent, route: '/patient-followup' })
+    return null
+  }
 
   const onSubmit = (values) => {
     const {
@@ -116,7 +121,7 @@ const FollowupUpdate = (props) => {
     };
     mutate(formattedData);
   };
-  
+
   const [initOpdValues, setInitOpdValues] = useState({
     facilityId: '',
     moduleServiceName: '',
@@ -128,7 +133,6 @@ const FollowupUpdate = (props) => {
   const { mutate, isLoading } = useSaveFollowup(formik, props);
   const actionType = props?.activeContent?.actionType || "create";
   const [currentFacId, setCurrentFacId] = useState(null)
-
   useEffect(async () => {
     const opdVisit = await fetchFollowup(history?.location?.state?.patientId)
     setInitOpdValues(opdVisit)

@@ -5,7 +5,7 @@ import axios from "axios";
 import { token as token, url as baseUrl } from "./../../../api";
 import { forwardRef } from "react";
 import "semantic-ui-css/semantic.min.css";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import Check from "@material-ui/icons/Check";
@@ -33,9 +33,10 @@ import Moment from "moment";
 import momentLocalizer from "react-widgets-moment";
 import moment from "moment";
 import { FaUserPlus } from "react-icons/fa";
-import { TiArrowForward, TiTimes } from "react-icons/ti";
-import { Delete, DeleteForeverOutlined, DeleteForeverTwoTone, DeleteOutlineOutlined } from "@material-ui/icons";
+import { TiArrowForward, TiPlus, TiTimes } from "react-icons/ti";
+import { Delete, DeleteForeverOutlined, DeleteForeverTwoTone, DeleteOutlineOutlined, PlusOne } from "@material-ui/icons";
 import { DeleteForeverRounded } from "@mui/icons-material";
+import { Box } from "@material-ui/core";
 
 //Dtate Picker package
 Moment.locale("en");
@@ -109,128 +110,96 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const HepatitisPatients = (props) => {
-  const calculate_age = (dob) => {
-    const today = new Date();
-    const dateParts = dob.split("-");
-    const birthDate = new Date(dob); // create a date object directlyfrom`dob1`argument
-    let age_now = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-
-    if (age_now <= 0 && m < 0 && today.getDate() < birthDate.getDate()) {
-      age_now--;
-    }
-
-    if (age_now === 0) {
-      return m + " month(s)";
-    }
-    return age_now + " year(s)";
-  };
   const [loading, setLoading] = useState("");
   const [enablePPI, setEnablePPI] = useState(true);
-  const tableRef = useRef(null);
+  const [tabRecords, setTabRecords] = useState([])
+  const history = useHistory()
 
-  const getHospitalNumber = (identifier) => {
-    const hospitalNumber = identifier.identifier.find(
-      (obj) => obj.type == "HospitalNumber"
-    );
-    return hospitalNumber ? hospitalNumber.value : "";
-  };
-  const handleRemoteData = (query) =>
-    new Promise((resolve, reject) => {
-      axios
-        .get(
-          `${baseUrl}opd-setting?pageSize=${query.pageSize}&pageNo=${query.page}&searchParam=${query.search}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-        .then((response) => response)
-        .then((result) => {
-          if (result?.data === "") {
-            resolve({
-              data: [],
-              page: 0,
-              totalCount: 0,
-            });
-          } else {
-            resolve({
-              data: result?.data?.map?.((row) => ({
-                name: [row?.firstName, row?.otherName, row?.surname]
-                  .filter(Boolean)
-                  .join(", "),
-                id: row?.id,
-                facilityId: row?.facilityId,
-                serviceName: row?.moduleServiceName,
-                serviceCode:row?.moduleServiceCode,
-                encounter:row?.encounter,
+  // const loadCreate = () => {
+  //   props.setActiveContent({
+  //     ...props.activeContent,
+  //     route: "patient-followup",
+  //     actionType: "create",
+  //   });
+  // };
+  const fetchRemoteData = (query) => {
+    axios
+      .get(
+        `${baseUrl}opd-setting?pageSize=${query?.pageSize}&pageNo=${query?.page}&searchParam=${query?.search}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      .then((response) => response)
+      .then((result) => {
+        setTabRecords({
+          data: result?.data?.map?.((row) => ({
+            name: [row?.firstName, row?.otherName, row?.surname]
+              .filter(Boolean)
+              .join(", "),
+            id: row?.id,
+            facilityId: row?.facilityId,
+            serviceName: row?.moduleServiceName,
+            serviceCode: row?.moduleServiceCode,
+            encounter: row?.encounter,
 
-                actions: (
-                  <div>
-                      <ButtonGroup
-                        variant="contained"
-                        aria-label="split button"
+            actions: (
+              <div>
+                <ButtonGroup
+                  variant="contained"
+                  aria-label="split button"
+                >
+                  <Link
+                    to={{
+                      pathname: "/patient-history",
+                      state: {
+                        patientId: row.id,
+                        patientObj: row,
+                      },
+                    }}
+                  >
+                    <Button startIcon={<TiArrowForward size='.65em' style={{
+                      color: "#fff",
+                      fontWeight: "bolder",
+                      whiteSpace: "nowrap",
+                      marginRight: 0
+                    }} />} style={{ backgroundColor: "rgb(153, 46, 98)" }}>
+                      <span
+                        style={{
+                          color: "#fff",
+                        }}
                       >
-                        <Button
-                          color="primary"
-                          size="small"
-                          aria-label="select merge strategy"
-                          aria-haspopup="menu"
-                          style={{ backgroundColor: "rgb(153, 46, 98)" }}
-                        >
-                          <TiArrowForward />
-                        </Button>
-                        <Link
-                      to={{
-                        pathname: "/patient-history",
-                        state: {
-                          patientId: row.id,
-                          patientObj: row,
-                        },
+                        Edit
+                      </span>
+                    </Button>
+                  </Link>
+
+                  <Button onClick={() => {
+                    handleDelete(row?.id)
+                  }} startIcon={<DeleteForeverOutlined size='.65em' style={{
+                    color: "#fff",
+                    fontWeight: "bolder",
+                    whiteSpace: "nowrap",
+                  }} />} style={{ backgroundColor: "rgb(153, 46, 98)" }}>
+                    <span
+                      style={{
+                        fontSize: "12px",
+                        color: "#fff",
+                        fontWeight: "bolder",
+                        whiteSpace: "nowrap",
                       }}
                     >
-                        <Button style={{ backgroundColor: "rgb(153, 46, 98)" }}>
-                          <span
-                            style={{
-                              fontSize: "12px",
-                              color: "#fff",
-                              fontWeight: "bolder",
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                           Edit
-                          </span>
-                        </Button>
-                        </Link>
-                        <Link
-                      to={{
-                        pathname: "/patient-history",
-                        state: {
-                          patientId: row.id,
-                          patientObj: row,
-                        },
-                      }}
-                    >
-                        <Button style={{ backgroundColor: "rgb(153, 46, 98)" }}>
-                          <span
-                            style={{
-                              fontSize: "12px",
-                              color: "#fff",
-                              fontWeight: "bolder",
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                            <DeleteForeverOutlined />
-                          </span>
-                        </Button>
-                        </Link>
-                      </ButtonGroup>
-                  </div>
-                ),
-              })),
-              page: query.page,
-              totalCount: result.data.totalRecords,
-            });
-          }
-        });
-    });
+                      Delete
+                    </span>
+                  </Button>
+                </ButtonGroup>
+              </div>
+            ),
+          })),
+          page: query?.page,
+          totalCount: result.data.totalRecords,
+        })
+      }
+      );
+  }
   const enablePPIColumns = () => {
     setEnablePPI(!enablePPI);
   };
@@ -261,11 +230,26 @@ const HepatitisPatients = (props) => {
   const handleChangePage = (page) => {
     setCurrentPage(page + 1);
   };
+  const handleDelete = (id) => {
+    axios.delete(
+      `${baseUrl}opd-setting/${id}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    ).then((response) => {
+      fetchRemoteData()
+      return response.data;
+    });
+  }
+
+  useEffect(async () => {
+    fetchRemoteData()
+  }, [])
   return (
     <div>
       <MaterialTable
         icons={tableIcons}
-        title={<PPISelect />}
+        title={<Box display={'flex'} flexDirection='row' alignItems={'center'} justifyContent={'space-between'}><div style={{ padding: '.2em' }} ><PPISelect /></div> <div style={{ padding: '.2em' }}><Button marginLeft={'1em'} variant="contained" startIcon={<TiPlus />} color="secondary" style={{ background: '#4BB543' }}>Add</Button></div></Box>}
         columns={[
           {
             title: "Id",
@@ -280,7 +264,7 @@ const HepatitisPatients = (props) => {
           { title: "Actions", field: "actions", filtering: false },
         ]}
         isLoading={loading}
-        data={handleRemoteData}
+        data={tabRecords.data}
         options={{
           headerStyle: {
             backgroundColor: "#014d88",
@@ -300,7 +284,7 @@ const HepatitisPatients = (props) => {
           debounceInterval: 400,
           sorting: true,
         }}
-        // onChangePage={handleChangePage}
+      // onChangePage={handleChangePage}
       />
     </div>
   );
