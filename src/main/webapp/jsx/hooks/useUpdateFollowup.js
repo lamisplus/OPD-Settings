@@ -8,11 +8,11 @@ export const useUpdateFollowup = (formik, props) => {
   const { mutate, isLoading, isError } = useMutation({
     mutationFn: updateFollowup,
     onSuccess: () => {
-      toast.success("Follow up updated successful.");
+      toast.success("Record updated successful");
       formik.resetForm();
       queryClient.invalidateQueries()
       queryClient.refetchQueries()
-      props.setActiveContent({ ...props.activeContent, route: "recent-history" });
+      props.setActiveContent({ ...props.activeContent, route: "patient-followup" });
     },
   });
 

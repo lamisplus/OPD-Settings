@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import MatButton from "@material-ui/core/Button";
 import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -98,10 +98,6 @@ const FollowupCreate = (props) => {
   const [currentFacId, setCurrentFacId] = useState(null)
 
   const onSubmit = (values) => {
-    for (const x of Object.values(values)) {
-      if (!x) return toast.error('All fields are required!')
-    }
-
     const {
       facilityId,
       moduleServiceName,
@@ -113,21 +109,21 @@ const FollowupCreate = (props) => {
       facilityId: parseInt(facilityId),
       moduleServiceName,
       moduleServiceCode,
-      encounter,
+      encounterType: encounter,
     };
     mutate(formattedData);
   };
-  
+
   const { formik } = useValidateOpdFormValuesHook(onSubmit, "create", {
     facilityId: '',
     moduleServiceName: '',
     moduleServiceCode: '',
-    encounter: ''
+    encounter: 'test'
   });
 
   const { mutate, isLoading } = useSaveFollowup(formik, props);
   const actionType = props?.activeContent?.actionType || "create";
-
+  const calcServiceCode = useMemo(() => formik?.values?.moduleServiceName + (formik?.values?.moduleServiceName && "_code"), [formik?.values?.moduleServiceName])
   useEffect(async () => {
     const facId = await fetchCurrentFacility(history?.location?.state?.patientId)
     setCurrentFacId(facId?.applicationUserOrganisationUnits[0])
@@ -149,8 +145,7 @@ const FollowupCreate = (props) => {
                 }}
               >
                 <h5 className="card-title" style={{ color: "#fff" }}>
-                  Outpatient Visit {`(${actionType})`}
-                </h5>
+                  Setting               </h5>
               </div>
               <div>
                 <div className="card-body">
@@ -178,38 +173,11 @@ const FollowupCreate = (props) => {
                           >
                             <option value=''></option>
                             <option value={currentFacId?.organisationUnitId}>{currentFacId?.organisationUnitName}</option>
-                            </select>
+                          </select>
                           {formik.touched?.facilityId &&
                             formik?.errors?.facilityId !== "" && (
                               <span className={classes.error}>
                                 {formik?.errors?.facilityId}
-                              </span>
-                            )}
-                        </FormGroup>
-                      </div>
-
-                      <div className="form-group mb-3 col-md-4">
-                        <FormGroup>
-                          <Label for="facilityId">Service Code</Label>
-                          <span style={{ color: "red" }}> *</span>{" "}
-                          <Input
-                            className="form-control"
-                            type="text"
-                            name="moduleServiceCode"
-                            id="moduleServiceCode"
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
-                            onBlur={formik.handleBlur}
-                            onChange={formik.handleChange}
-                            value={formik?.values?.moduleServiceCode}
-                          />
-
-                          {formik.touched?.moduleServiceCode &&
-                            formik?.errors?.moduleServiceCode !== "" && (
-                              <span className={classes.error}>
-                                {formik?.errors?.moduleServiceCode}
                               </span>
                             )}
                         </FormGroup>
@@ -241,8 +209,34 @@ const FollowupCreate = (props) => {
                             )}
                         </FormGroup>
                       </div>
+                      <div style={{ display: 'none' }} className="form-group mb-3 col-md-4">
+                        <FormGroup>
+                          <Label for="facilityId">Service Code</Label>
+                          <span style={{ color: "red" }}> *</span>{" "}
+                          <Input
+                            disabled
+                            className="form-control"
+                            type="text"
+                            name="moduleServiceCode"
+                            id="moduleServiceCode"
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            value={calcServiceCode}
+                          />
 
-                      <div className="form-group mb-3 col-md-4">
+                          {formik.touched?.moduleServiceCode &&
+                            formik?.errors?.moduleServiceCode !== "" && (
+                              <span className={classes.error}>
+                                {formik?.errors?.moduleServiceCode}
+                              </span>
+                            )}
+                        </FormGroup>
+                      </div>
+                      <div style={{ display: 'none' }} className="form-group mb-3 col-md-4">
                         <FormGroup>
                           <Label for="encounter">
                             Encounter Type

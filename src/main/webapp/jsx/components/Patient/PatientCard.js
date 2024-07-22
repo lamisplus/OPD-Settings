@@ -1,28 +1,19 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import classNames from "classnames";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Link } from "react-router-dom";
 import ButtonMui from "@material-ui/core/Button";
 import { TiArrowBack } from "react-icons/ti";
 //import Chip from '@material-ui/core/Chip';
 import Divider from "@material-ui/core/Divider";
-import { Button } from "semantic-ui-react";
-import { Label } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import { Col, Row } from "reactstrap";
 import Moment from "moment";
 import momentLocalizer from "react-widgets-moment";
-import moment from "moment";
 import axios from "axios";
 import { url as baseUrl, token } from "./../../../api";
-import Typography from "@material-ui/core/Typography";
-import CaptureBiometric from "./CaptureBiometric";
 
 //Dtate Picker package
 Moment.locale("en");
@@ -31,6 +22,9 @@ momentLocalizer();
 const styles = (theme) => ({
   root: {
     width: "100%",
+    "& .MuiExpansionPanelSummary-content": {
+      justifyContent: "flex-end !important"
+    }
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -67,24 +61,25 @@ function PatientCard(props) {
   const { classes } = props;
   const patientObj = props.patientObj;
   const [patientObj2, setpatientObj2] = useState({});
-  
+
 
   const getFullPatientDetail = (value) => {
-    axios
-      .get(`${baseUrl}patient/${patientObj.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-      
-        setpatientObj2(response.data);
-      })
-      .catch((error) => {
-      
-      });
+
+    if (patientObj?.id) {
+      axios
+        .get(`${baseUrl}patient/${patientObj?.id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+
+          setpatientObj2(response.data);
+        })
+        .catch((error) => {
+
+        });
+    }
   };
   useEffect(() => {
-    //PatientCurrentStatus();
-    //CheckBiometric();
     getFullPatientDetail();
   }, [props.patientObj]);
 
@@ -123,23 +118,17 @@ function PatientCard(props) {
     <div className={classes.root}>
       <ExpansionPanel>
         <ExpansionPanelSummary>
-          <Row>
+          <Row className="justify-content-end ms-2 mr-2 mt-1"
+          >
             <Col md={12}>
               <Row className={"mt-1"}>
                 <Col md={12} className={classes.root2}>
-                  {/* <b style={{ fontSize: "25px", color: "rgb(153, 46, 98)" }}>
-                    {`${patientObj.firstName} ${
-                      patientObj.lastName
-                        ? patientObj.lastName
-                        : patientObj.surname
-                    }`}
-                  </b> */}
                   <Link to={"/"}>
                     <ButtonMui
+
                       variant="contained"
                       color="primary"
-                      className=" float-end ms-2 mr-2 mt-2"
-                      //startIcon={<FaUserPlus size="10"/>}
+                      className=" ms-2 mr-2 mt-2"
                       startIcon={<TiArrowBack />}
                       style={{
                         backgroundColor: "rgb(153, 46, 98)",
@@ -151,56 +140,6 @@ function PatientCard(props) {
                     </ButtonMui>
                   </Link>
                 </Col>
-                {/* <Col md={4} className={classes.root2}>
-                  <span>
-                    {" "}
-                    Patient ID :{" "}
-                    <b style={{ color: "#0B72AA" }}>
-                      {patientObj?.hospitalNumber}
-                  
-                    </b>
-                  </span>
-                </Col>
-
-                <Col md={4} className={classes.root2}>
-                  <span>
-                    Date Of Birth :{" "}
-                    <b style={{ color: "#0B72AA" }}>
-                      {patientObj?.dateOfBirth}
-                    </b>
-                  </span>
-                </Col>
-                <Col md={4} className={classes.root2}>
-                  <span>
-                    {" "}
-                    Age : <b style={{ color: "#0B72AA" }}>{patientObj?.age}</b>
-                  </span>
-                </Col>
-                <Col md={4}>
-                  <span>
-                    {" "}
-                    Gender :{" "}
-                    <b style={{ color: "#0B72AA" }}>{patientObj?.gender}</b>
-                  </span>
-                </Col>
-                <Col md={4} className={classes.root2}>
-                  <span>
-                    {" "}
-                    Phone Number :{" "}
-                    <b style={{ color: "#0B72AA" }}>
-                      {patientObj2?.contactPoint?.contactPoint[0]?.value}
-                    </b>
-                  </span>
-                </Col>
-                <Col md={4} className={classes.root2}>
-                  <span>
-                    {" "}
-                    Address :{" "}
-                    <b style={{ color: "#0B72AA" }}>
-                      {patientObj2?.address?.address[0]?.city}
-                    </b>
-                  </span>
-                </Col> */}
               </Row>
             </Col>
           </Row>

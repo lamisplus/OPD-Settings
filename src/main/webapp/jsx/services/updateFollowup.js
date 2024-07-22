@@ -6,8 +6,9 @@ const config = {
 };
 
 export const updateFollowup = async (args) => {
+  console.log('data: ', args)
   const response = await axios.put(
-    `${baseUrl}hepatitis/update-hepatitis-followup/${args.id}`,
+    `${baseUrl}opd-setting/${args.id}`,
     {
       ...args.data,
     },

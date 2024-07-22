@@ -1,21 +1,15 @@
 import React, { useState, Fragment } from "react";
 import { Row, Col, Card, Tab, Tabs } from "react-bootstrap";
-import PatientList from "./Patient/PatientList";
-import PatientVaccinatedLIst from "./Patient/PatientVaccinatedLIst";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import { FaUserPlus } from "react-icons/fa";
 import HepatitisPatients from "./Patient/HepatitisPatient";
-import ViralHepatitis from "./Patient/ViralHepatitisForms/Form1";
-import ViralHepatitisSummaryFormContainer from "./Patient/ViralHepatitisSummaryFormContainer";
+import { TiPlus } from "react-icons/ti";
 const divStyle = {
   borderRadius: "2px",
   fontSize: 14,
 };
 
 const Home = () => {
-  const [key, setKey] = useState("home");
-
   return (
     <Fragment>
       <div
@@ -30,22 +24,17 @@ const Home = () => {
       </div>
       <Link
         to={{
-          pathname: "/register-patient",
+          pathname: "/patient-history",
           state: {
             existingPatient: "new",
+            isNewVisit: true,
+            isNoUpdateform: true,
           },
         }}
       >
         {" "}
-        <Button
-          variant="contained"
-          color="primary"
-          className=" float-end mb-10"
-          startIcon={<FaUserPlus size="10" />}
-          style={{ backgroundColor: "#014d88" }}
-        >
-          <span style={{ textTransform: "capitalize" }}>New Patient</span>
-        </Button>
+        <div style={{ padding: '.2em' }}><Button variant="contained"
+          className=" float-end mb-10" marginLeft={'1em'} startIcon={<TiPlus />} color="secondary" style={{ background: '#014d88' }}>Add</Button></div>
       </Link>
       <br />
       <br />
@@ -58,22 +47,12 @@ const Home = () => {
               <div className="custom-tab-1">
                 <Tabs
                   id="controlled-tab-example"
-                  activeKey={key}
-                  onSelect={(k) => setKey(k)}
+                  activeKey={1}
                   className="mb-3"
                 >
-                  <Tab eventKey="home" title="Patients">
-                    <PatientList />
-                  </Tab>
-
-                  <Tab eventKey="visualization" title="Outpatients Visits">
+                  <Tab eventKey={1}>
                     <HepatitisPatients />
                   </Tab>
-
-                  {/* <Tab eventKey="vaccinated" title="Summary"> */}
-                  {/* <PatientVaccinatedLIst /> */}
-                  {/* <ViralHepatitisSummaryFormContainer /> */}
-                  {/* </Tab> */}
                 </Tabs>
               </div>
             </Card.Body>

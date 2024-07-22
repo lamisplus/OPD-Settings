@@ -12,7 +12,7 @@ export const useSaveFollowup = (formik, props) => {
       formik.resetForm();
       queryClient.invalidateQueries()
       queryClient.refetchQueries()
-      props.setActiveContent({ ...props.activeContent, route: "recent-history" });
+      props.setActiveContent({ ...props.activeContent, route: "patient-history" });
     },
 
   

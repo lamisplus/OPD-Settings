@@ -27,16 +27,6 @@ export default function App() {
             <Route path="/patient-history">
               <PatientDetail />
             </Route>
-            {/* <Route path="/register-patient">
-              <ViralHepatitisFormsContainer />
-            </Route>
-            <Route path="/enroll-patient">
-              <EnrollPatientPage />
-            </Route>
-            <Route path="/update-patient">
-              <UpdatePatientEnrollment />
-            </Route> */}
-
             <Route path="/">
               <Home />
             </Route>

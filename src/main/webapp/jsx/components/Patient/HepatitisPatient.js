@@ -33,7 +33,7 @@ import Moment from "moment";
 import momentLocalizer from "react-widgets-moment";
 import moment from "moment";
 import { FaUserPlus } from "react-icons/fa";
-import { TiArrowForward, TiPlus, TiTimes } from "react-icons/ti";
+import { TiArrowForward, TiDelete, TiDeleteOutline, TiDocumentDelete, TiEdit, TiPlus, TiTimes } from "react-icons/ti";
 import { Delete, DeleteForeverOutlined, DeleteForeverTwoTone, DeleteOutlineOutlined, PlusOne } from "@material-ui/icons";
 import { DeleteForeverRounded } from "@mui/icons-material";
 import { Box } from "@material-ui/core";
@@ -113,15 +113,8 @@ const HepatitisPatients = (props) => {
   const [loading, setLoading] = useState("");
   const [enablePPI, setEnablePPI] = useState(true);
   const [tabRecords, setTabRecords] = useState([])
-  const history = useHistory()
+  const [isHomeBtnActive,seIisHomeBtnActive ] = useState(false)
 
-  // const loadCreate = () => {
-  //   props.setActiveContent({
-  //     ...props.activeContent,
-  //     route: "patient-followup",
-  //     actionType: "create",
-  //   });
-  // };
   const fetchRemoteData = (query) => {
     axios
       .get(
@@ -156,7 +149,7 @@ const HepatitisPatients = (props) => {
                       },
                     }}
                   >
-                    <Button startIcon={<TiArrowForward size='.65em' style={{
+                    <Button startIcon={<TiEdit size='.65em' style={{
                       color: "#fff",
                       fontWeight: "bolder",
                       whiteSpace: "nowrap",
@@ -174,7 +167,7 @@ const HepatitisPatients = (props) => {
 
                   <Button onClick={() => {
                     handleDelete(row?.id)
-                  }} startIcon={<DeleteForeverOutlined size='.65em' style={{
+                  }} startIcon={<TiDeleteOutline size='.65em' style={{
                     color: "#fff",
                     fontWeight: "bolder",
                     whiteSpace: "nowrap",
@@ -249,7 +242,7 @@ const HepatitisPatients = (props) => {
     <div>
       <MaterialTable
         icons={tableIcons}
-        title={<Box display={'flex'} flexDirection='row' alignItems={'center'} justifyContent={'space-between'}><div style={{ padding: '.2em' }} ><PPISelect /></div> <div style={{ padding: '.2em' }}><Button marginLeft={'1em'} variant="contained" startIcon={<TiPlus />} color="secondary" style={{ background: '#4BB543' }}>Add</Button></div></Box>}
+        title={<Box display={'flex'} flexDirection='row' alignItems={'center'} justifyContent={'space-between'}><div style={{ padding: '.2em' }} ><PPISelect /></div></Box>}
         columns={[
           {
             title: "Id",
