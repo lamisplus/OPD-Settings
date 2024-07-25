@@ -19,6 +19,7 @@ import { useValidateOpdFormValuesHook } from "../../../formSchemas/followupFormV
 import { useSaveFollowup } from "../../../hooks/useSaveFollowup";
 import { toast } from "react-toastify";
 import { fetchCurrentFacility } from "../../../services/fetchCurrentFacility";
+import { useHistory } from "react-router-dom";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -96,8 +97,13 @@ const useStyles = makeStyles((theme) => ({
 const FollowupCreate = (props) => {
   const classes = useStyles();
   const [currentFacId, setCurrentFacId] = useState(null)
+  const history = useHistory()
+
+  const { mutate, isLoading } = useSaveFollowup(formik, props);
+  const actionType = props?.activeContent?.actionType || "create";
 
   const onSubmit = (values) => {
+
     for (const x of Object.values(values)) {
       if (!x) return toast.error('All fields are required!')
     }
@@ -116,6 +122,7 @@ const FollowupCreate = (props) => {
       encounter,
     };
     mutate(formattedData);
+    
   };
   
   const { formik } = useValidateOpdFormValuesHook(onSubmit, "create", {
@@ -124,9 +131,6 @@ const FollowupCreate = (props) => {
     moduleServiceCode: '',
     encounter: ''
   });
-
-  const { mutate, isLoading } = useSaveFollowup(formik, props);
-  const actionType = props?.activeContent?.actionType || "create";
 
   useEffect(async () => {
     const facId = await fetchCurrentFacility(history?.location?.state?.patientId)
@@ -284,7 +288,6 @@ const FollowupCreate = (props) => {
                 variant="contained"
                 color="primary"
                 className={classes.button}
-                // onClick={handleSubmit}
                 style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
               >
                 <span style={{ textTransform: "capitalize" }}>

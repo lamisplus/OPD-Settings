@@ -6,8 +6,6 @@ import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { FaUserPlus } from "react-icons/fa";
 import HepatitisPatients from "./Patient/HepatitisPatient";
-import ViralHepatitis from "./Patient/ViralHepatitisForms/Form1";
-import ViralHepatitisSummaryFormContainer from "./Patient/ViralHepatitisSummaryFormContainer";
 const divStyle = {
   borderRadius: "2px",
   fontSize: 14,
@@ -15,7 +13,6 @@ const divStyle = {
 
 const Home = () => {
   const [key, setKey] = useState("home");
-
   return (
     <Fragment>
       <div
@@ -69,11 +66,6 @@ const Home = () => {
                   <Tab eventKey="visualization" title="Outpatients Visits">
                     <HepatitisPatients />
                   </Tab>
-
-                  {/* <Tab eventKey="vaccinated" title="Summary"> */}
-                  {/* <PatientVaccinatedLIst /> */}
-                  {/* <ViralHepatitisSummaryFormContainer /> */}
-                  {/* </Tab> */}
                 </Tabs>
               </div>
             </Card.Body>
