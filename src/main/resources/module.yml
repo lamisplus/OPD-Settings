@@ -4,16 +4,16 @@ store: true
 menus:
   - icon: fa fa-gear
     disabled: false
-    name: OPDSetting
+    name: Check-in Setting
     state: opd_setting
     url: /across/resources/static/opd/index.html
 umdLocation: /across/resources/static/opd/index.html
 webModules:
-  - breadcrumb: OPDSetting
-    name: OPDSettingModule
+  - breadcrumb: CheckInSetting
+    name: Check-in Setting
     path: opd_setting
     position: 99
 permissions:
   - name: create_post_service
     description: create post service
-    moduleName: OPDSettingModule
+    moduleName: CheckInSettingModule

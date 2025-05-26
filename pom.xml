@@ -11,7 +11,7 @@
 	</parent>
 
 	<groupId>org.lamisplus.modules</groupId>
-	<artifactId>opd_setting_module</artifactId>
+	<artifactId>checkIn_setting_module</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 	<name>opd_setting_module</name>

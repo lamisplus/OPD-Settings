@@ -6,7 +6,6 @@ const config = {
 };
 
 export const updateFollowup = async (args) => {
-  console.log('data: ', args)
   const response = await axios.put(
     `${baseUrl}opd-setting/${args.id}`,
     {

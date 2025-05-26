@@ -16,7 +16,6 @@ import "react-phone-input-2/lib/style.css";
 import "../patient.css";
 import "react-widgets/dist/css/react-widgets.css";
 import { useValidateOpdFormValuesHook } from "../../../formSchemas/followupFormValidation";
-import { useSaveFollowup } from "../../../hooks/useSaveFollowup";
 import { toast } from "react-toastify";
 import { fetchCurrentFacility } from "../../../services/fetchCurrentFacility";
 
@@ -122,7 +121,6 @@ const FollowupCreate = (props) => {
   });
 
   const { mutate, isLoading } = useSaveFollowup(formik, props);
-  const actionType = props?.activeContent?.actionType || "create";
   const calcServiceCode = useMemo(() => formik?.values?.moduleServiceName + (formik?.values?.moduleServiceName && "_code"), [formik?.values?.moduleServiceName])
   useEffect(async () => {
     const facId = await fetchCurrentFacility(history?.location?.state?.patientId)

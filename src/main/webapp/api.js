@@ -17,12 +17,12 @@ export const hepatitisScreeningResultPath =
   process.env.REACT_APP_HEPATITIS_SCREENING_RESULT_PATH;
 
 
-  export const url =
+export const url =
   process.env.NODE_ENV === "development"
     ? "http://localhost:8383/api/v1/"
     : "/api/v1/";
 
 export const token =
   process.env.NODE_ENV === "development"
-      ? "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJndWVzdEBsYW1pc3BsdXMub3JnIiwiYXV0aCI6IlN1cGVyIEFkbWluIiwibmFtZSI6Ikd1ZXN0IEd1ZXN0IiwiZXhwIjoxNzIxNjc0OTU1fQ.Ju3CHGaUAbE61Kh6TMYxi9sidLymRpnjp2dKE0h2C4MmusNH3fDYBJmW5xqzX6xn7FyScoe1N_j8cL5oP2hg1g"
-      : new URLSearchParams(window.location.search).get("jwt");
+    ? "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJndWVzdEBsYW1pc3BsdXMub3JnIiwiYXV0aCI6IlN1cGVyIEFkbWluIiwibmFtZSI6Ikd1ZXN0IEd1ZXN0IiwiZXhwIjoxNzIxNzUyMTExfQ._TYLgaPeucKoXag8r9XsyL9XNjS251D0n2h7JQ7eFawnb8dU-wGloxngiDScz0NmS2fYYup0LNfhqmu3r7ZrRw"
+    : new URLSearchParams(window.location.search).get("jwt");
