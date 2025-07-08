@@ -16,13 +16,12 @@ export const relationshipPath = process.env.REACT_APP_RELATIONSHIP_PATH;
 export const hepatitisScreeningResultPath =
   process.env.REACT_APP_HEPATITIS_SCREENING_RESULT_PATH;
 
-
 export const url =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8383/api/v1/"
-    : "/api/v1/";
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8383/api/v1/'
+    : '/api/v1/';
 
 export const token =
-  process.env.NODE_ENV === "development"
-    ? "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJndWVzdEBsYW1pc3BsdXMub3JnIiwiYXV0aCI6IlN1cGVyIEFkbWluIiwibmFtZSI6Ikd1ZXN0IEd1ZXN0IiwiZXhwIjoxNzIxNzUyMTExfQ._TYLgaPeucKoXag8r9XsyL9XNjS251D0n2h7JQ7eFawnb8dU-wGloxngiDScz0NmS2fYYup0LNfhqmu3r7ZrRw"
-    : new URLSearchParams(window.location.search).get("jwt");
+  process.env.NODE_ENV === 'development'
+    ? 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJndWVzdEBsYW1pc3BsdXMub3JnIiwiYXV0aCI6IlN1cGVyIEFkbWluIiwibmFtZSI6Ikd1ZXN0IEd1ZXN0IiwiZXhwIjoxNzQ5MDUzMTQ2fQ.NmwO6CfKDPos-Cx-TzfGZAE77gCfequmy6DF8_j8oaqB_2dp-b6AIfLJcdFtTuwAG7Injp12DhhyR9Yk-QR0Sg'
+    : new URLSearchParams(window.location.search).get('jwt');
