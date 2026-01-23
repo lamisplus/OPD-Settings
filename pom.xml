@@ -12,7 +12,7 @@
 
 	<groupId>org.lamisplus.modules</groupId>
 	<artifactId>checkIn_setting_module</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.0.1</version>
 	<packaging>jar</packaging>
 	<name>opd_setting_module</name>
 	<description>opd module</description>
@@ -119,6 +119,11 @@
 			<artifactId>base-module</artifactId>
 			<version>2.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.lamisplus.modules</groupId>
+			<artifactId>patient</artifactId>
+			<version>2.0.4</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
@@ -215,12 +220,6 @@
 		<dependency>
 			<groupId>com.foreach.across.modules</groupId>
 			<artifactId>across-hibernate-module</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.lamisplus.modules</groupId>
-			<artifactId>patient</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 
 	</dependencies>
