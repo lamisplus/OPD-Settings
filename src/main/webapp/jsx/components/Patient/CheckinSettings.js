@@ -1,37 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import MaterialTable from 'material-table';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import MaterialTable from "material-table";
+import axios from "axios";
 
-import { token as token, url as baseUrl } from '../../../api';
-import { forwardRef } from 'react';
-import 'semantic-ui-css/semantic.min.css';
-import { Link } from 'react-router-dom';
-import AddBox from '@material-ui/icons/AddBox';
-import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import Check from '@material-ui/icons/Check';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Clear from '@material-ui/icons/Clear';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import Edit from '@material-ui/icons/Edit';
-import FilterList from '@material-ui/icons/FilterList';
-import FirstPage from '@material-ui/icons/FirstPage';
-import LastPage from '@material-ui/icons/LastPage';
-import Remove from '@material-ui/icons/Remove';
-import SaveAlt from '@material-ui/icons/SaveAlt';
-import Search from '@material-ui/icons/Search';
-import ViewColumn from '@material-ui/icons/ViewColumn';
-import 'react-toastify/dist/ReactToastify.css';
-import 'react-widgets/dist/css/react-widgets.css';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import '@reach/menu-button/styles.css';
-import Moment from 'moment';
-import momentLocalizer from 'react-widgets-moment';
-import { TiDeleteOutline, TiEdit } from 'react-icons/ti';
-import { Box } from '@material-ui/core';
-Moment.locale('en');
+import { token as token, url as baseUrl } from "../../../api";
+import { forwardRef } from "react";
+import "semantic-ui-css/semantic.min.css";
+import { Link } from "react-router-dom";
+import AddBox from "@material-ui/icons/AddBox";
+import ArrowUpward from "@material-ui/icons/ArrowUpward";
+import Check from "@material-ui/icons/Check";
+import ChevronLeft from "@material-ui/icons/ChevronLeft";
+import ChevronRight from "@material-ui/icons/ChevronRight";
+import Clear from "@material-ui/icons/Clear";
+import DeleteOutline from "@material-ui/icons/DeleteOutline";
+import Edit from "@material-ui/icons/Edit";
+import FilterList from "@material-ui/icons/FilterList";
+import FirstPage from "@material-ui/icons/FirstPage";
+import LastPage from "@material-ui/icons/LastPage";
+import Remove from "@material-ui/icons/Remove";
+import SaveAlt from "@material-ui/icons/SaveAlt";
+import Search from "@material-ui/icons/Search";
+import ViewColumn from "@material-ui/icons/ViewColumn";
+import "react-toastify/dist/ReactToastify.css";
+import "react-widgets/dist/css/react-widgets.css";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import "@reach/menu-button/styles.css";
+import Moment from "moment";
+import momentLocalizer from "react-widgets-moment";
+import { TiDeleteOutline, TiEdit } from "react-icons/ti";
+import { Box } from "@material-ui/core";
+Moment.locale("en");
 momentLocalizer();
 
 const tableIcons = {
@@ -58,24 +58,24 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-const CheckinSettings = props => {
-  const [loading, setLoading] = useState('');
+const CheckinSettings = (props) => {
+  const [loading, setLoading] = useState("");
   const [enablePPI, setEnablePPI] = useState(true);
   const [tabRecords, setTabRecords] = useState([]);
 
-  const fetchRemoteData = query => {
+  const fetchRemoteData = (query) => {
     axios
       .get(
         `${baseUrl}opd-setting?pageSize=${query?.pageSize}&pageNo=${query?.page}&searchParam=${query?.search}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       )
-      .then(response => response)
-      .then(result => {
+      .then((response) => response)
+      .then((result) => {
         setTabRecords({
-          data: result?.data?.map?.(row => ({
+          data: result?.data?.map?.((row) => ({
             name: [row?.firstName, row?.otherName, row?.surname]
               .filter(Boolean)
-              .join(', '),
+              .join(", "),
             id: row?.id,
             facilityId: row?.facilityId,
             serviceName: row?.moduleServiceName,
@@ -87,7 +87,7 @@ const CheckinSettings = props => {
                 <ButtonGroup variant="contained" aria-label="split button">
                   <Link
                     to={{
-                      pathname: '/patient-history',
+                      pathname: "/patient-history",
                       state: {
                         patientId: row.id,
                         patientObj: row,
@@ -99,22 +99,22 @@ const CheckinSettings = props => {
                         <TiEdit
                           size=".65em"
                           style={{
-                            color: '#fff',
-                            fontWeight: 'bolder',
-                            whiteSpace: 'nowrap',
+                            color: "#fff",
+                            fontWeight: "bolder",
+                            whiteSpace: "nowrap",
                             marginRight: 0,
                           }}
                         />
                       }
                       style={{
-                        backgroundColor: 'rgb(153, 46, 98)',
+                        backgroundColor: "rgb(153, 46, 98)",
                         borderTopRightRadius: 0,
                         borderBottomRightRadius: 0,
                       }}
                     >
                       <span
                         style={{
-                          color: '#fff',
+                          color: "#fff",
                         }}
                       >
                         Edit
@@ -130,20 +130,20 @@ const CheckinSettings = props => {
                       <TiDeleteOutline
                         size=".65em"
                         style={{
-                          color: '#fff',
-                          fontWeight: 'bolder',
-                          whiteSpace: 'nowrap',
+                          color: "#fff",
+                          fontWeight: "bolder",
+                          whiteSpace: "nowrap",
                         }}
                       />
                     }
-                    style={{ backgroundColor: 'rgb(153, 46, 98)' }}
+                    style={{ backgroundColor: "rgb(153, 46, 98)" }}
                   >
                     <span
                       style={{
-                        fontSize: '12px',
-                        color: '#fff',
-                        fontWeight: 'bolder',
-                        whiteSpace: 'nowrap',
+                        fontSize: "12px",
+                        color: "#fff",
+                        fontWeight: "bolder",
+                        whiteSpace: "nowrap",
                       }}
                     >
                       Delete
@@ -159,39 +159,12 @@ const CheckinSettings = props => {
       });
   };
 
-  const enablePPIColumns = () => {
-    setEnablePPI(!enablePPI);
-  };
-
-  const PPISelect = () => (
-    <div>
-      <div className="form-check custom-checkbox  float-left mt-4 mb-4 ">
-        <input
-          type="checkbox"
-          className="form-check-input"
-          name="showPP!"
-          id="showPP"
-          value="showPP"
-          checked={enablePPI === true ? false : true}
-          onChange={enablePPIColumns}
-          style={{
-            border: '1px solid #014D88',
-            borderRadius: '0.25rem',
-          }}
-        />
-        <label className="form-check-label" htmlFor="basic_checkbox_1">
-          <b style={{ color: '#014d88', fontWeight: 'bold' }}>SHOW PII</b>
-        </label>
-      </div>
-    </div>
-  );
-
-  const handleDelete = id => {
+  const handleDelete = (id) => {
     axios
       .delete(`${baseUrl}opd-setting/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      .then(response => {
+      .then((response) => {
         fetchRemoteData();
         return response.data;
       });
@@ -205,47 +178,34 @@ const CheckinSettings = props => {
     <div>
       <MaterialTable
         icons={tableIcons}
-        title={
-          <Box
-            display={'flex'}
-            flexDirection="row"
-            alignItems={'center'}
-            justifyContent={'space-between'}
-          >
-            <div style={{ padding: '.2em' }}>
-              <PPISelect />
-            </div>
-          </Box>
-        }
         columns={[
           {
-            title: 'Id',
-            field: 'id',
+            title: "Id",
+            field: "id",
             filtering: false,
-            hidden: enablePPI,
           },
-          { title: 'Hosp. Number', field: 'facilityId', filtering: false },
-          { title: 'Service Name', field: 'serviceName', filtering: false },
-          { title: 'Service Code', field: 'serviceCode', filtering: false },
-          { title: 'Encounter Type', field: 'encounter', filtering: false },
-          { title: 'Actions', field: 'actions', filtering: false },
+          { title: "Hosp. Number", field: "facilityId", filtering: false },
+          { title: "Service Name", field: "serviceName", filtering: false },
+          { title: "Service Code", field: "serviceCode", filtering: false },
+          { title: "Encounter Type", field: "encounter", filtering: false },
+          { title: "Actions", field: "actions", filtering: false },
         ]}
         isLoading={loading}
         data={tabRecords.data}
         options={{
           headerStyle: {
-            backgroundColor: '#014d88',
-            color: '#fff',
-            fontSize: '16px',
-            padding: '10px',
-            fontWeight: 'bolder',
+            backgroundColor: "#014d88",
+            color: "#fff",
+            fontSize: "16px",
+            padding: "10px",
+            fontWeight: "bolder",
           },
           searchFieldStyle: {
-            width: '50%',
+            width: "50%",
           },
           filtering: false,
           exportButton: false,
-          searchFieldAlignment: 'left',
+          searchFieldAlignment: "left",
           pageSizeOptions: [10, 20, 100],
           pageSize: 10,
           debounceInterval: 400,

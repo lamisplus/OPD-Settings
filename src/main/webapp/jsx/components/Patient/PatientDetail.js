@@ -86,14 +86,14 @@ function PatientCard(props) {
         setRecentActivities(response?.data);
       })
 
-      .catch((error) => { });
+      .catch((error) => {});
   };
 
   useEffect(() => {
     if (history?.location?.state?.isNewVisit) {
-      setActiveContent({ ...activeContent2 })
+      setActiveContent({ ...activeContent2 });
     }
-  }, [])
+  }, []);
   useEffect(() => {
     getRecentActivties();
   }, [activeContent]);
