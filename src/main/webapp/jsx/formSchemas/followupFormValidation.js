@@ -72,7 +72,7 @@ export const useValidateOpdFormValuesHook = (onSubmit, operation,initialValues) 
 
   const FollowupFormValidationSchema = yup.object({
     moduleServiceName: isOperationUpdate ? yup.mixed().required() : yup.string().required(),
-    moduleServiceCode: isOperationUpdate ? yup.mixed().required() : yup.string().required(),
+    moduleServiceCode: isOperationUpdate ? yup.mixed() : yup.string(),
     facilityId: isOperationUpdate ? yup.mixed().required() : yup.string().required(),
     encounter: isOperationUpdate ? yup.mixed().required() : yup.string().required(),
   });

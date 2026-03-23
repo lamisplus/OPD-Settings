@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import MatButton from "@material-ui/core/Button";
-import { FormGroup, Label, Spinner, Input, Form, InputGroup } from "reactstrap";
+import { FormGroup, Label, Spinner, Input } from "reactstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faCheckSquare,
@@ -16,10 +16,9 @@ import "react-phone-input-2/lib/style.css";
 import "../patient.css";
 import "react-widgets/dist/css/react-widgets.css";
 import { useValidateOpdFormValuesHook } from "../../../formSchemas/followupFormValidation";
-import { useSaveFollowup } from "../../../hooks/useSaveFollowup";
 import { toast } from "react-toastify";
 import { fetchCurrentFacility } from "../../../services/fetchCurrentFacility";
-import { useHistory } from "react-router-dom";
+import { useSaveFollowup } from "../../../hooks/useSaveFollowup";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -96,46 +95,52 @@ const useStyles = makeStyles((theme) => ({
 
 const FollowupCreate = (props) => {
   const classes = useStyles();
-  const [currentFacId, setCurrentFacId] = useState(null)
-  const history = useHistory()
+  const [currentFacId, setCurrentFacId] = useState(null);
 
-  const { mutate, isLoading } = useSaveFollowup(formik, props);
-  const actionType = props?.activeContent?.actionType || "create";
+  const ALL_OPTIONS = [
+    "Triage",
+    "HIV",
+    "HTS",
+    "PrEP",
+    "Consultation",
+    "Laboratory",
+    "Pharmacy",
+    "PMTCT",
+  ];
 
   const onSubmit = (values) => {
-
-    for (const x of Object.values(values)) {
-      if (!x) return toast.error('All fields are required!')
-    }
-
-    const {
-      facilityId,
-      moduleServiceName,
-      moduleServiceCode,
-      encounter,
-    } = values;
+    const { facilityId, moduleServiceName, moduleServiceCode, encounter } =
+      values;
 
     const formattedData = {
       facilityId: parseInt(facilityId),
       moduleServiceName,
       moduleServiceCode,
-      encounter,
+      encounterType: encounter,
     };
     mutate(formattedData);
-    
   };
-  
+
   const { formik } = useValidateOpdFormValuesHook(onSubmit, "create", {
-    facilityId: '',
-    moduleServiceName: '',
-    moduleServiceCode: '',
-    encounter: ''
+    facilityId: "",
+    moduleServiceName: "",
+    moduleServiceCode: "",
+    encounter: "test",
   });
 
+  const { mutate, isLoading } = useSaveFollowup(formik, props);
+  const calcServiceCode = useMemo(
+    () =>
+      formik?.values?.moduleServiceName +
+      (formik?.values?.moduleServiceName && "_code"),
+    [formik?.values?.moduleServiceName],
+  );
   useEffect(async () => {
-    const facId = await fetchCurrentFacility(history?.location?.state?.patientId)
-    setCurrentFacId(facId?.applicationUserOrganisationUnits[0])
-  }, [])
+    const facId = await fetchCurrentFacility(
+      history?.location?.state?.patientId,
+    );
+    setCurrentFacId(facId?.applicationUserOrganisationUnits[0]);
+  }, []);
 
   return (
     <Card className={classes.root}>
@@ -153,7 +158,7 @@ const FollowupCreate = (props) => {
                 }}
               >
                 <h5 className="card-title" style={{ color: "#fff" }}>
-                  Outpatient Visit {`(${actionType})`}
+                  Setting{" "}
                 </h5>
               </div>
               <div>
@@ -180,9 +185,11 @@ const FollowupCreate = (props) => {
                               borderRadius: "0.2rem",
                             }}
                           >
-                            <option value=''></option>
-                            <option value={currentFacId?.organisationUnitId}>{currentFacId?.organisationUnitName}</option>
-                            </select>
+                            <option value="">Choose Facility ID</option>
+                            <option value={currentFacId?.organisationUnitId}>
+                              {currentFacId?.organisationUnitName}
+                            </option>
+                          </select>
                           {formik.touched?.facilityId &&
                             formik?.errors?.facilityId !== "" && (
                               <span className={classes.error}>
@@ -194,36 +201,9 @@ const FollowupCreate = (props) => {
 
                       <div className="form-group mb-3 col-md-4">
                         <FormGroup>
-                          <Label for="facilityId">Service Code</Label>
-                          <span style={{ color: "red" }}> *</span>{" "}
-                          <Input
-                            className="form-control"
-                            type="text"
-                            name="moduleServiceCode"
-                            id="moduleServiceCode"
-                            style={{
-                              border: "1px solid #014D88",
-                              borderRadius: "0.2rem",
-                            }}
-                            onBlur={formik.handleBlur}
-                            onChange={formik.handleChange}
-                            value={formik?.values?.moduleServiceCode}
-                          />
-
-                          {formik.touched?.moduleServiceCode &&
-                            formik?.errors?.moduleServiceCode !== "" && (
-                              <span className={classes.error}>
-                                {formik?.errors?.moduleServiceCode}
-                              </span>
-                            )}
-                        </FormGroup>
-                      </div>
-
-                      <div className="form-group mb-3 col-md-4">
-                        <FormGroup>
                           <Label for="moduleServiceName">Service Name</Label>
                           <span style={{ color: "red" }}> *</span>{" "}
-                          <Input
+                          <select
                             className="form-control"
                             type="text"
                             name="moduleServiceName"
@@ -235,8 +215,27 @@ const FollowupCreate = (props) => {
                               border: "1px solid #014D88",
                               borderRadius: "0.2rem",
                             }}
-                          />
-
+                          >
+                            <option value="">Select Service Area</option>
+                            {ALL_OPTIONS.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                          {/* <Input
+                            className="form-control"
+                            type="text"
+                            name="moduleServiceName"
+                            id="moduleServiceName"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            value={formik?.values?.moduleServiceName}
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                          /> */}
                           {formik.touched?.moduleServiceName &&
                             formik?.errors?.moduleServiceName !== "" && (
                               <span className={classes.error}>
@@ -245,12 +244,41 @@ const FollowupCreate = (props) => {
                             )}
                         </FormGroup>
                       </div>
-
-                      <div className="form-group mb-3 col-md-4">
+                      <div
+                        style={{ display: "none" }}
+                        className="form-group mb-3 col-md-4"
+                      >
                         <FormGroup>
-                          <Label for="encounter">
-                            Encounter Type
-                          </Label>
+                          <Label for="facilityId">Service Code</Label>
+                          <span style={{ color: "red" }}> *</span>{" "}
+                          <Input
+                            disabled
+                            className="form-control"
+                            type="text"
+                            name="moduleServiceCode"
+                            id="moduleServiceCode"
+                            style={{
+                              border: "1px solid #014D88",
+                              borderRadius: "0.2rem",
+                            }}
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            value={calcServiceCode}
+                          />
+                          {formik.touched?.moduleServiceCode &&
+                            formik?.errors?.moduleServiceCode !== "" && (
+                              <span className={classes.error}>
+                                {formik?.errors?.moduleServiceCode}
+                              </span>
+                            )}
+                        </FormGroup>
+                      </div>
+                      <div
+                        style={{ display: "none" }}
+                        className="form-group mb-3 col-md-4"
+                      >
+                        <FormGroup>
+                          <Label for="encounter">Encounter Type</Label>
                           <span style={{ color: "red" }}> *</span>{" "}
                           <Input
                             className="form-control"
@@ -265,7 +293,6 @@ const FollowupCreate = (props) => {
                               borderRadius: "0.2rem",
                             }}
                           />
-
                           {formik.touched?.encounter &&
                             formik?.errors?.encounter !== "" && (
                               <span className={classes.error}>
@@ -288,6 +315,7 @@ const FollowupCreate = (props) => {
                 variant="contained"
                 color="primary"
                 className={classes.button}
+                // onClick={handleSubmit}
                 style={{ backgroundColor: "#014d88", fontWeight: "bolder" }}
               >
                 <span style={{ textTransform: "capitalize" }}>

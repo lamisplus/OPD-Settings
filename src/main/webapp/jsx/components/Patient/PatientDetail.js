@@ -60,6 +60,13 @@ function PatientCard(props) {
     actionType: "update",
     obj: {},
   });
+  const [activeContent2, setActiveContent2] = useState({
+    route: "recent-history",
+    id: "",
+    activeTab: "home",
+    actionType: "create",
+    obj: {},
+  });
   const { classes } = props;
   const patientObj =
     history.location && history.location.state
@@ -72,7 +79,7 @@ function PatientCard(props) {
 
   const getRecentActivties = () => {
     axios
-      .get(`${baseUrl}hepatitis/activities/${patientObj.personUuid}`, {
+      .get(`${baseUrl}hepatitis/activities/${patientObj?.personUuid}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -82,6 +89,11 @@ function PatientCard(props) {
       .catch((error) => {});
   };
 
+  useEffect(() => {
+    if (history?.location?.state?.isNewVisit) {
+      setActiveContent({ ...activeContent2 });
+    }
+  }, []);
   useEffect(() => {
     getRecentActivties();
   }, [activeContent]);
@@ -95,7 +107,7 @@ function PatientCard(props) {
           <li className="breadcrumb-item active">
             <h4>
               {" "}
-              <Link to={"/"}>Outpatients /</Link> Edit
+              <Link to={"/"}>OPD /</Link> Edit
             </h4>
           </li>
         </ol>
@@ -116,28 +128,15 @@ function PatientCard(props) {
           />
           <br />
           {activeContent.route === "recent-history" && (
-          <FollowUpHome
-          patientObj={patientObj}
-          setActiveContent={setActiveContent}
-          activeContent={activeContent}
-          recentActivities={recentActivities}
-          getRecentActivties={getRecentActivties}
-        />
-          )}
-          {/* {activeContent.route === "diagnosis" && (
-            <ViralHepatitisForm2
+            <FollowUpHome
               patientObj={patientObj}
               setActiveContent={setActiveContent}
               activeContent={activeContent}
+              recentActivities={recentActivities}
+              getRecentActivties={getRecentActivties}
             />
           )}
-          {activeContent.route === "treatment" && (
-            <DasboardTreatmentForm
-              patientObj={patientObj}
-              setActiveContent={setActiveContent}
-              activeContent={activeContent}
-            />
-          )} */}
+
           {activeContent.route === "patient-history" && (
             <PatientHistory
               patientObj={patientObj}
@@ -150,7 +149,7 @@ function PatientCard(props) {
             <FollowUpHome
               patientObj={patientObj}
               setActiveContent={setActiveContent}
-              activeContent={activeContent}
+              activeContent={activeContent2}
               recentActivities={recentActivities}
               getRecentActivties={getRecentActivties}
             />

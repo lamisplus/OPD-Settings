@@ -2,17 +2,19 @@ import { useMutation } from "react-query";
 import { toast } from "react-toastify";
 import { updateFollowup } from "../services/updateFollowup";
 import { queryClient } from "../utils/queryClient";
+import { useHistory } from "react-router-dom";
 
 export const useUpdateFollowup = (formik, props) => {
-
+  const history = useHistory()
   const { mutate, isLoading, isError } = useMutation({
     mutationFn: updateFollowup,
     onSuccess: () => {
-      toast.success("Follow up updated successful.");
+      toast.success("Record updated successful");
       formik.resetForm();
       queryClient.invalidateQueries()
       queryClient.refetchQueries()
-      props.setActiveContent({ ...props.activeContent, route: "recent-history" });
+      history.push('/')
+      // props.setActiveContent({ ...props.activeContent, route: "patient-followup" });
     },
   });
 

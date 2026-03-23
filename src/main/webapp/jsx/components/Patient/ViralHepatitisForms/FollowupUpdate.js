@@ -22,6 +22,7 @@ import { useHistory } from "react-router-dom";
 import { fetchFollowup } from "../../../services/fetchFollowup";
 import useFacilities from "../../../utils/useFacilities";
 import { fetchCurrentFacility } from "../../../services/fetchCurrentFacility";
+import { useUpdateFollowup } from "../../../hooks/useUpdateFollowup";
 
 library.add(faCheckSquare, faCoffee, faEdit, faTrash);
 
@@ -101,7 +102,6 @@ const FollowupUpdate = (props) => {
   const history = useHistory();
 
   if (history?.location?.state?.isCreate) {
-    alert(history?.location?.state?.isCreate)
     props?.setActiveContent({ ...props.activeContent, route: '/patient-followup' })
     return null
   }
@@ -119,24 +119,30 @@ const FollowupUpdate = (props) => {
       moduleServiceCode,
       encounterType: encounter
     };
-    mutate(formattedData);
+    mutate({
+      data: formattedData,
+      id: history?.location?.state?.patientId
+    });
   };
 
   const [initOpdValues, setInitOpdValues] = useState({
     facilityId: '',
     moduleServiceName: '',
     moduleServiceCode: '',
-    encounterType: ''
+    encounter: 'test'
   })
 
-  const { formik } = useValidateOpdFormValuesHook(onSubmit, "create", initOpdValues);
-  const { mutate, isLoading } = useSaveFollowup(formik, props);
-  const actionType = props?.activeContent?.actionType || "create";
+  const { formik } = useValidateOpdFormValuesHook(onSubmit, "update", initOpdValues);
+  const { mutate, isLoading } = useUpdateFollowup(formik, props);
   const [currentFacId, setCurrentFacId] = useState(null)
+
   useEffect(async () => {
-    const opdVisit = await fetchFollowup(history?.location?.state?.patientId)
-    setInitOpdValues(opdVisit)
+    if (history?.location?.state?.patientId) {
+      const opdVisit = await fetchFollowup(history?.location?.state?.patientId)
+      setInitOpdValues(opdVisit)
+    }
   }, [])
+
   useEffect(async () => {
     const facId = await fetchCurrentFacility(history?.location?.state?.patientId)
     setCurrentFacId(facId?.applicationUserOrganisationUnits[0])
@@ -158,7 +164,7 @@ const FollowupUpdate = (props) => {
                   }}
                 >
                   <h5 className="card-title" style={{ color: "#fff" }}>
-                    Outpatient Visit {`(${actionType})`}
+                    Setting
                   </h5>
                 </div>
                 <div>
@@ -199,6 +205,31 @@ const FollowupUpdate = (props) => {
 
                         <div className="form-group mb-3 col-md-4">
                           <FormGroup>
+                            <Label for="moduleServiceName">Service Name</Label>
+                            <span style={{ color: "red" }}> *</span>{" "}
+                            <Input
+                              className="form-control"
+                              type="text"
+                              name="moduleServiceName"
+                              id="moduleServiceName"
+                              onBlur={formik.handleBlur}
+                              onChange={formik.handleChange}
+                              value={formik?.values?.moduleServiceName}
+                              style={{
+                                border: "1px solid #014D88",
+                                borderRadius: "0.2rem",
+                              }}
+                            />
+                            {formik.touched?.moduleServiceName &&
+                              formik?.errors?.moduleServiceName !== "" && (
+                                <span className={classes.error}>
+                                  {formik?.errors?.moduleServiceName}
+                                </span>
+                              )}
+                          </FormGroup>
+                        </div>
+                        <div style={{ display: 'none' }} className="form-group mb-3 col-md-4">
+                          <FormGroup>
                             <Label for="facilityId">Service Code</Label>
                             <span style={{ color: "red" }}> *</span>{" "}
                             <Input
@@ -223,35 +254,7 @@ const FollowupUpdate = (props) => {
                               )}
                           </FormGroup>
                         </div>
-
-                        <div className="form-group mb-3 col-md-4">
-                          <FormGroup>
-                            <Label for="moduleServiceName">Service Name</Label>
-                            <span style={{ color: "red" }}> *</span>{" "}
-                            <Input
-                              className="form-control"
-                              type="text"
-                              name="moduleServiceName"
-                              id="moduleServiceName"
-                              onBlur={formik.handleBlur}
-                              onChange={formik.handleChange}
-                              value={formik?.values?.moduleServiceName}
-                              style={{
-                                border: "1px solid #014D88",
-                                borderRadius: "0.2rem",
-                              }}
-                            />
-
-                            {formik.touched?.moduleServiceName &&
-                              formik?.errors?.moduleServiceName !== "" && (
-                                <span className={classes.error}>
-                                  {formik?.errors?.moduleServiceName}
-                                </span>
-                              )}
-                          </FormGroup>
-                        </div>
-
-                        <div className="form-group mb-3 col-md-4">
+                        <div style={{ display: 'none' }} className="form-group mb-3 col-md-4">
                           <FormGroup>
                             <Label for="encounter">
                               Encounter Type

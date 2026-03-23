@@ -3,6 +3,7 @@ import axios from "axios";
 import { Dropdown, Menu } from "semantic-ui-react";
 import { makeStyles } from "@material-ui/core/styles";
 import { url as baseUrl, token } from "../../../api";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   navItemText: {
@@ -11,43 +12,33 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SubMenu(props) {
+  const history = useHistory()
   useEffect(() => {
     Observation();
   }, [props.patientObj, props.recentActivities]);
 
   const Observation = () => {
-    axios
-      .get(`${baseUrl}observation/person/${props.patientObj.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        const observation = response.data;
-        const mental = observation.filter((x) => x.type === "mental health");
-        const evaluation = observation.filter(
-          (x) => x.type === "initial evaluation"
-        );
-      })
-      .catch((error) => {
-        
-      });
-  };
+    if (props.patientObj?.id) {
+      axios
+        .get(`${baseUrl}observation/person/${props.patientObj?.id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          const observation = response.data;
+          const mental = observation.filter((x) => x.type === "mental health");
+          const evaluation = observation.filter(
+            (x) => x.type === "initial evaluation"
+          );
+        })
+        .catch((error) => {
 
-  // const loadVaccination = (row) => {
-  //   props.setActiveContent({ ...props.activeContent, route: "diagnosis" });
-  // };
-  // const loadTreatment = (row) => {
-  //   props.setActiveContent({ ...props.activeContent, route: "treatment" });
-  // };
+        });
+    }
+
+  };
 
   const onClickHome = (row) => {
     props.setActiveContent({ ...props.activeContent, route: "recent-history", actionType: "update" });
-  };
-
-  const loadPatientHistory = () => {
-    props.setActiveContent({
-      ...props.activeContent,
-      route: "patient-history",
-    });
   };
 
   const loadFollowup = () => {
@@ -61,11 +52,7 @@ function SubMenu(props) {
   return (
     <div>
       <Menu size="large" color={"black"} inverted>
-        <Menu.Item onClick={() => onClickHome()}> Home</Menu.Item>
-        <Menu.Item onClick={() => loadFollowup()}>New Visit</Menu.Item>
-        {/* <Menu.Item onClick={() => loadVaccination()}>Diagnosis</Menu.Item>
-        <Menu.Item onClick={() => loadTreatment()}>Treatment</Menu.Item> */}
-        {/* <Menu.Item onClick={() => loadPatientHistory()}>History</Menu.Item> */}
+        {history?.location?.state?.isNewVisit ? <Menu.Item onClick={() => loadFollowup()}>Create</Menu.Item> : <Menu.Item onClick={() => onClickHome()}>Update</Menu.Item>}
       </Menu>
     </div>
   );
