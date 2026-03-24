@@ -3,7 +3,7 @@ import { Row, Col, Card, Tab, Tabs } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { TiPlus } from "react-icons/ti";
-import CheckinSettings from "./Patient/CheckinSettings";
+import OpdSettingList from "./OpdSetting/OpdSettingList";
 const divStyle = {
   borderRadius: "2px",
   fontSize: 14,
@@ -63,7 +63,7 @@ const Home = () => {
                   className="mb-3"
                 >
                   <Tab eventKey={1}>
-                    <CheckinSettings />
+                    <OpdSettingList />
                   </Tab>
                 </Tabs>
               </div>

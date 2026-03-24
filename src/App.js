@@ -7,7 +7,7 @@ import "./main/webapp/vendor/bootstrap-select/dist/css/bootstrap-select.min.css"
 import "./../src/main/webapp/css/style.css";
 import "bootstrap/dist/css/bootstrap.css";
 import Home from "./main/webapp/jsx/components/Home";
-import PatientDetail from "./main/webapp/jsx/components/Patient/PatientDetail";
+import OpdSettingDetail from "./main/webapp/jsx/components/OpdSetting/OpdSettingDetail";
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "./main/webapp/jsx/utils/queryClient";
 
@@ -19,7 +19,7 @@ export default function App() {
           <ToastContainer />
           <Switch>
             <Route path="/patient-history">
-              <PatientDetail />
+              <OpdSettingDetail />
             </Route>
             <Route path="/">
               <Home />
