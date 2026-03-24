@@ -125,8 +125,8 @@
     "yup": "^0.32.8"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && xcopy /s /y build src\\main\\resources\\views\\static\\opd",
+    "start": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts build && xcopy /s /y build src\\main\\resources\\views\\static\\opd",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
